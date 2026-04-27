@@ -21,7 +21,6 @@ public class Graph {
      * 
      * @param entries the entries of the graph; each entry is one edge
      */
-
     public Graph(List<GraphEntry> data) {
         adj = new HashMap<>();
         for (GraphEntry entry : data) {
@@ -117,7 +116,47 @@ public class Graph {
      * @return a list of edges that form a minimum spanning tree of the graph
      */
     public List<Edge> deriveMST(String start) {
-        // TODO: implement me!
-        return null;
+        List<String> vertices = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>();
+        Map<String, Edge> mins = new HashMap<>();
+
+        vertices.add(start);
+        for (Map.Entry<String, Integer> entry : adj.get(start).entrySet()) {
+            String neighbor = entry.getKey();
+            mins.put(neighbor, new Edge(start, neighbor));
+        }
+
+        while (vertices.size() < adj.size()) {
+            String bestVertex = null;
+            Edge bestEdge = null;
+            for (Map.Entry<String, Edge> entry : mins.entrySet()) {
+                String vertex = entry.getKey();
+                Edge edge = entry.getValue();
+                if (!vertices.contains(bestVertex)) {
+                    if (bestEdge == null
+                            || getWeight(edge.src(), edge.dest()).get() < getWeight(bestEdge.src(), bestEdge.dest())
+                                    .get()) {
+                        bestVertex = vertex;
+                        bestEdge = edge;
+                    }
+                }
+            }
+
+            edges.add(bestEdge);
+            vertices.add(bestVertex);
+
+            for (Map.Entry<String, Integer> entry : adj.get(bestVertex).entrySet()) {
+                String neighbor = entry.getKey();
+                int weight = entry.getValue();
+                if (!vertices.contains(neighbor)) {
+                    if (!mins.containsKey(neighbor)
+                            || weight < getWeight(mins.get(neighbor).src(), mins.get(neighbor).dest()).get()) {
+                                mins.put(neighbor, new Edge(bestVertex, neighbor));
+                    }
+                }
+            }
+        }
+
+        return edges;
     }
 }
