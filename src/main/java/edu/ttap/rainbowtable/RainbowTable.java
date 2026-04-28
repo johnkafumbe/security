@@ -44,7 +44,7 @@ public class RainbowTable {
         for (int i = 0; i < maxSteps; i++) {
             Password reduced = reducer.apply(hash);
 
-            for(Pair<Password, Password> pair : chains) {
+            for (Pair<Password, Password> pair : chains) {
                 if (reduced.equals(pair.second())) {
                     Password pw = pair.first();
                     Hash replay = hasher.apply(pw);

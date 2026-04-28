@@ -151,7 +151,7 @@ public class Graph {
                 if (!vertices.contains(neighbor)) {
                     if (!mins.containsKey(neighbor)
                             || weight < getWeight(mins.get(neighbor).src(), mins.get(neighbor).dest()).get()) {
-                                mins.put(neighbor, new Edge(bestVertex, neighbor));
+                        mins.put(neighbor, new Edge(bestVertex, neighbor));
                     }
                 }
             }
